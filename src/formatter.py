@@ -32,7 +32,7 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
-def main() -> None:
+# def main() -> None:
     """Main function to run the data formatting script."""
     parser = argparse.ArgumentParser(description="Clean and format raw sales data.")
     parser.add_argument(
