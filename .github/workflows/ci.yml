@@ -5,18 +5,20 @@ on:
     branches: [ main ]
     paths:
       - "src/**"
+      - "tests/**"  # <-- Added
       - "data/**"
       - "requirements.txt"
       - ".github/workflows/**"
   pull_request:
     paths:
       - "src/**"
+      - "tests/**"  # <-- Added
       - "data/**"
       - "requirements.txt"
       - ".github/workflows/**"
 
 jobs:
-  run-formatter:
+  run-predict:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -33,6 +35,24 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run the formatter script
+      - name: Run the predict script
         run: |
-          python src/formatter.py --input data/raw_sales_data.csv --output data/cleaned_sales_data.csv
+          python src/predict.py "good"
+
+  test: # <--- NEW JOB STARTS HERE
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run tests with pytest
+        run: pytest -v
